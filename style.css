@@ -1,0 +1,10 @@
+table {
+    font-size: larger;
+    margin: 25px 0;
+    text-align: left;
+}
+
+table th, 
+table td {
+    padding: 12px 15px;
+}
