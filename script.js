@@ -6,70 +6,35 @@ const button = document.getElementById('search');
 let sky = ""
 let degrees = ""
 let humidity = ""
-let location = 'london';
-
-async function getData () {
-    const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q='+location+'&APPID='+weatherKey, {mode:"cors"})
-    const weatherData = await response.json()
-    const degrees = await weatherData.main.temp
-    const humidity = await weatherData.main.humidity
-    const sky = await weatherData.weather[0].main 
-    return weatherData, degrees, humidity
-}
-
-async function getDegrees() {
-    const degrees = getData.weatherData.main.temp;
-    return degrees
-}
-
 
 button.addEventListener('click', () => {
     const city = document.getElementById("input").value;
 
-    function GetData() {
-        let location='London'
-        fetch('https://api.openweathermap.org/data/2.5/weather?q='+location+'&APPID='+weatherKey, {mode:"cors"})
-            .then(function(response) {
-                return response.json();
-          })
-          //  .then(function(response) {
-          //      console.log(response);
-          //})
-            .then(function(response) {
-                degrees = response.main.temp
-                humidity = response.main.humidity
-                //city = response.name
-                sky = response.weather[0].main
-                console.log(city, degrees, humidity, sky)
-                
-            })
-            .catch(function(err) {
-            console.log(err);
-            }
-        );
+    //function to get the data through an API
+    async function getData () {
+        const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q='+city+'&APPID='+weatherKey, {mode:"cors"})
+        const weatherData = await response.json()
+        degrees = await weatherData.main.temp
+        humidity = await weatherData.main.humidity
+        sky = await weatherData.weather[0].main 
+
+        // function to get a gif related to the weather condition
+        async function getImage() {
+            const response = await fetch('https://api.giphy.com/v1/gifs/translate?api_key='+giphyKey+'&s='+sky, {mode:"cors"})
+            const imageData = await response.json()
+            img.src = imageData.data.images.original.url;
+            img.className = 'display'
+        }
+
+        //function to display the image
+        getImage()
+        console.log(weatherData, degrees, humidity, sky)
+        return weatherData, degrees, humidity, sky
     }
 
-
-
-
-    
-    function GetImage() {
-        fetch('https://api.giphy.com/v1/gifs/translate?api_key='+giphyKey+'&s='+city, {mode:"cors"})
-            .then(function(response) {
-                return response.json();
-          })
-            .then(function(response) {
-                img.src = response.data.images.original.url;
-          })
-            .catch(function(err) {
-            console.log(err);
-        });
-    }
-
-    GetData();
-    GetImage();
+    getData();
 })
-*/
+
 
 
 
